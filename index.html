@@ -1,37 +1,28 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
-    <body>
-        <script type=text/javascript>
-            navigator.getUserMedia = navigator.getUserMedia
-                                   || navigator.webkitGetUserMedia
-                                   || navigator.mozGetUserMedia;
-            navigator.getUserMedia({ video : false, audio : true }, callback, console.log);
-            function callback(stream) {
-                var ctx = new AudioContext();
-                var mic = ctx.createMediaStreamSource(stream);
-                var analyser = ctx.createAnalyser();
-                var osc = ctx.createOscillator();
-                mic.connect(analyser); 
-                osc.connect(ctx.destination);
-                osc.start(0);
-                var data = new Uint8Array(analyser.frequencyBinCount);
-                function play() {
-                    analyser.getByteFrequencyData(data);
-                    // get fullest bin
-                    var idx = 0;
-                    for (var j=0; j < analyser.frequencyBinCount; j++) {
-                        if (data[j] > data[idx]) {
-                            idx = j;
-                        }
-                    }
-                    var frequency = idx * ctx.sampleRate / analyser.fftSize;
-                    console.log(frequency);
-                    osc.frequency.value = frequency;
-                    requestAnimationFrame(play);
-                }
-                play();
-            }
-        </script>
-    </body>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>audio_viz_0</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/p5.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/addons/p5.dom.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/addons/p5.sound.js"></script>
+	<script src="sketch.js"></script>
+
+	<style>
+		body {
+			margin:0;
+			padding:0;
+			overflow: hidden;
+		}
+		canvas {
+			margin:auto;
+		}
+	</style>
+</head>
+<body>
+</body>
 </html>
